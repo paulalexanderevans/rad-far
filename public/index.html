@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/style.css" />
+        <title></title>
+    </head>
+    <body>
+        <div class="center">
+            <div class="main" id="main">
+                <img class="header" src="media/RAD-FAR HEADER.jpg" alt="icon" />
+                <div class="form">
+                    <form>
+                        <h5>
+                            Feel free to browse or add to the gallery using the
+                            form below.
+                        </h5>
+                        <input
+                            v-model="title"
+                            type="text"
+                            name="title"
+                            placeholder="title"
+                        /><br />
+                        <input
+                            v-model="description"
+                            type="text"
+                            name="description"
+                            placeholder="description"
+                        /><br />
+                        <input
+                            v-model="username"
+                            type="text"
+                            name="username"
+                            placeholder="username"
+                        /><br />
+                        <input
+                            @change="fileSelectHandler"
+                            type="file"
+                            name="file"
+                            accept="image/*"
+                        /><br />
+                        <button @click.prevent="clickhandler">Submit</button>
+                    </form>
+                </div>
+                <div class="container">
+                    <div
+                        class="card"
+                        v-for="each in images"
+                        @click="selectedImage = each.id"
+                    >
+                        <a :href="'#'+ each.id"
+                            ><img
+                                :src="each.url"
+                                :alt="each.description"
+                                :id="each.id"
+                                style="width: 100%"
+                            />
+                            <div class="info">
+                                <h6>{{each.title}}</h6>
+                            </div></a
+                        >
+                    </div>
+                    <div @click="getMoreImages" class="more" v-if="seen">
+                        More
+                    </div>
+                </div>
+
+                <modal
+                    v-if="selectedImage"
+                    title="hello adobo"
+                    description="adobo loves components"
+                    :imageid="selectedImage"
+                    @close="closeMe"
+                >
+                </modal>
+            </div>
+        </div>
+        <script type="text/x-template" id="modal">
+                        <!-- here will live the contents of whatver first-compntnet should display -->
+            <div class="overlay">
+                            <div class="modalContainer">
+                                <h1 @click="closeModal">x</h1>
+
+                                    <div class="navContainer">
+                                        <h1 @click="left"><</h1>
+
+
+                                        <img class="modalImage"
+                                        :src="url"
+                                        :alt="description"
+                                        :id="id"
+                                        />
+                                        <a href="url"><h1>></h1></a>
+                                    </div>
+
+                                <div class="ModalInfo">
+                                    <h3>{{title}}</h3>
+                                    <h6>{{description}} - Uploaded by {{username}} on {{date}}</h6>
+                                </div>
+                                <comments :imageid="imageid"></comments>
+                            </div>
+                            </div>
+        </script>
+        <script type="text/x-template" id="comments">
+            <div class="comments">
+               <form>
+                        <h5>
+                         Comments
+                        </h5>
+                        <div v-for="each in comments">
+                            <h6>{{each.comment}} - {{each.username}} - {{each.created_at}}</h6>
+                        </div>
+                        <input
+                            v-model="username"
+                            type="text"
+                            name="username"
+                            placeholder="username"
+                        /><br />
+                        <input
+                            v-model="comment"
+                            type="text"
+                            name="comment"
+                            placeholder="comment"
+                        /><br />
+                        <button @click.prevent="clickhandler">Post</button>
+                    </form>
+            </div>
+        </script>
+        <script src="/js/vue.js"></script>
+        <script src="/js/axios.min.js"></script>
+        <script src="/js/script.js"></script>
+    </body>
+</html>
